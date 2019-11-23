@@ -13,7 +13,7 @@ const offerRoutes = require("./Routes/offer");
 require("./Models/Offers");
 require("./Models/User");
 
-mongoose.connect(process.env.MONGOOSE_URI,
+mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true, useUnifiedTopology: true });
 
 const app = express();
