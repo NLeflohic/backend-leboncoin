@@ -21,14 +21,12 @@ router.get("/offers", async (req, res) => {
   try {
     let offers = Offers.find();
     if (offers) {
-      console.log("offers ok");
       if (req.query.sort !== undefined) {
         sort = getSort(req.query.sort);
         offers = offers.sort(sort);
       };
 
       if (req.query.priceMin && (req.query.priceMin > 0)) {
-        console.log("priceMin ", req.query.priceMin)
         const priceMin = Number(req.query.priceMin);
         offers = offers.find({ price: { $gte: priceMin } })
       }
@@ -40,11 +38,12 @@ router.get("/offers", async (req, res) => {
         const regExp = new RegExp(req.query.title, "i");
         offers = offers.find({ "title": regExp });
       }
-      console.log("offers", offers);
+
+      const skip = req.query.skip;
+      const limit = req.query.limit;
+      offers = offers.skip(parseInt(skip)).limit(parseInt(limit));
       const result = await offers.find();
-      console.log("result", result);
       const count = result.length;
-      //console.log("result", result);
 
       return res.json({ count: count, result });
     } else {
